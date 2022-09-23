@@ -1,5 +1,4 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./src/modules/project.js":
@@ -8,6 +7,7 @@
   \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Project": () => (/* binding */ Project)
@@ -92,6 +92,7 @@ var Project = /*#__PURE__*/function () {
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Task": () => (/* binding */ Task)
@@ -159,12 +160,48 @@ var Task = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./src/modules/ui.js":
+/*!***************************!*\
+  !*** ./src/modules/ui.js ***!
+  \***************************/
+/***/ (() => {
+
+var addNewTaskBtn = document.getElementById("add-new-task-btn");
+var todoInput = document.getElementById("new-task-input");
+var todoList = document.getElementById("todo-list");
+
+var addNewTask = function addNewTask() {
+  if (todoInput.value == "") {
+    alert("Please input a task");
+    return false;
+  }
+
+  var newTask = document.createElement("ul");
+  newTask.classList.add("todo-item");
+  newTask.innerText = todoInput.value;
+  todoList.appendChild(newTask);
+  todoInput.value = "";
+  newTask.addEventListener("click", function () {
+    todoList.removeChild(newTask);
+  });
+};
+
+addNewTaskBtn.addEventListener("click", addNewTask);
+todoInput.addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    addNewTask();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./src/style.css":
 /*!*************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./src/style.css ***!
   \*************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -179,7 +216,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n  font-family: \"Roboto\", sans-serif;\n  display: grid;\n  grid-template-columns: 320px repeat(3, 1fr);\n  grid-template-rows: 120px repeat(4, 1fr);\n  margin: 0;\n}\n\nnav {\n  background-color: cornflowerblue;\n  color: white;\n  padding: 20px;\n  grid-column: 1 / 2;\n  grid-row: 2 / 6;\n}\n\nheader {\n  background-color: #f8fafc;\n  grid-column: 1 / 5;\n  grid-row: 1 / 2;\n  display: flex;\n  justify-content: space-between;\n  padding: 10px 36px;\n}\n\nmain {\n  background-color: #e2e8f0;\n  grid-column: 2 / 5;\n  grid-row: 2 / 6;\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  grid-template-rows: repeat(2, 1fr);\n  padding: 20px;\n}\n", "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAEA;EACE,iCAAiC;EACjC,aAAa;EACb,2CAA2C;EAC3C,wCAAwC;EACxC,SAAS;AACX;;AAEA;EACE,gCAAgC;EAChC,YAAY;EACZ,aAAa;EACb,kBAAkB;EAClB,eAAe;AACjB;;AAEA;EACE,yBAAyB;EACzB,kBAAkB;EAClB,eAAe;EACf,aAAa;EACb,8BAA8B;EAC9B,kBAAkB;AACpB;;AAEA;EACE,yBAAyB;EACzB,kBAAkB;EAClB,eAAe;EACf,aAAa;EACb,qCAAqC;EACrC,kCAAkC;EAClC,aAAa;AACf","sourcesContent":["@import url(\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap\");\n\nbody {\n  font-family: \"Roboto\", sans-serif;\n  display: grid;\n  grid-template-columns: 320px repeat(3, 1fr);\n  grid-template-rows: 120px repeat(4, 1fr);\n  margin: 0;\n}\n\nnav {\n  background-color: cornflowerblue;\n  color: white;\n  padding: 20px;\n  grid-column: 1 / 2;\n  grid-row: 2 / 6;\n}\n\nheader {\n  background-color: #f8fafc;\n  grid-column: 1 / 5;\n  grid-row: 1 / 2;\n  display: flex;\n  justify-content: space-between;\n  padding: 10px 36px;\n}\n\nmain {\n  background-color: #e2e8f0;\n  grid-column: 2 / 5;\n  grid-row: 2 / 6;\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  grid-template-rows: repeat(2, 1fr);\n  padding: 20px;\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n  font-family: \"Roboto\", sans-serif;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  height: 600px;\n  margin: 0;\n}\n\nh1 {\n  text-align: center;\n}\n\n.input {\n  width: 100%;\n  display: flex;\n  align-items: center;\n}\n\n.input i {\n  font-size: 28px;\n}\n\n.input i:hover {\n  cursor: pointer;\n}\n\n.input input[type=\"text\"] {\n  background-color: whitesmoke;\n  border-radius: 16px;\n  margin-right: 12px;\n  border: none;\n  padding: 6px 16px;\n  font-size: 16px;\n  width: 600px;\n  height: 28px;\n}\n\n.todo-item {\n  font-size: large;\n}\n\n.todo-item:hover {\n  cursor: pointer;\n}\n", "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAEA;EACE,iCAAiC;EACjC,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,mBAAmB;EACnB,aAAa;EACb,SAAS;AACX;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,aAAa;EACb,mBAAmB;AACrB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,4BAA4B;EAC5B,mBAAmB;EACnB,kBAAkB;EAClB,YAAY;EACZ,iBAAiB;EACjB,eAAe;EACf,YAAY;EACZ,YAAY;AACd;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,eAAe;AACjB","sourcesContent":["@import url(\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap\");\n\nbody {\n  font-family: \"Roboto\", sans-serif;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  height: 600px;\n  margin: 0;\n}\n\nh1 {\n  text-align: center;\n}\n\n.input {\n  width: 100%;\n  display: flex;\n  align-items: center;\n}\n\n.input i {\n  font-size: 28px;\n}\n\n.input i:hover {\n  cursor: pointer;\n}\n\n.input input[type=\"text\"] {\n  background-color: whitesmoke;\n  border-radius: 16px;\n  margin-right: 12px;\n  border: none;\n  padding: 6px 16px;\n  font-size: 16px;\n  width: 600px;\n  height: 28px;\n}\n\n.todo-item {\n  font-size: large;\n}\n\n.todo-item:hover {\n  cursor: pointer;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -192,6 +229,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, "body {\n  font-family: \"Roboto\", san
   \*****************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 /*
@@ -303,6 +341,7 @@ module.exports = function (cssWithMappingToString) {
   \************************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 module.exports = function (item) {
@@ -334,6 +373,7 @@ module.exports = function (item) {
   \***********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -388,6 +428,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
   \****************************************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 var stylesInDOM = [];
@@ -501,6 +542,7 @@ module.exports = function (list, options) {
   \********************************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 var memo = {};
@@ -549,6 +591,7 @@ module.exports = insertBySelector;
   \**********************************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 /* istanbul ignore next  */
@@ -569,6 +612,7 @@ module.exports = insertStyleElement;
   \**********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
+"use strict";
 
 
 /* istanbul ignore next  */
@@ -590,6 +634,7 @@ module.exports = setAttributesWithoutAttributes;
   \***************************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 /* istanbul ignore next  */
@@ -669,6 +714,7 @@ module.exports = domAPI;
   \*********************************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 /* istanbul ignore next  */
@@ -762,15 +808,19 @@ module.exports = styleTagTransform;
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
+"use strict";
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_project__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/project */ "./src/modules/project.js");
 /* harmony import */ var _modules_task__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/task */ "./src/modules/task.js");
-/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./style.css */ "./src/style.css");
+/* harmony import */ var _modules_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/ui */ "./src/modules/ui.js");
+/* harmony import */ var _modules_ui__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_modules_ui__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./style.css */ "./src/style.css");
+
 
 
 
