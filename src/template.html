@@ -4,11 +4,25 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/4e480915d8.js"
+      crossorigin="anonymous"
+    ></script>
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
-    <nav>Sidebar</nav>
-    <header>Header</header>
-    <main>Content</main>
+    <div id="main-container">
+      <h1>What will you do today?</h1>
+      <div class="input" id="input">
+        <input
+          type="text"
+          name="new-task-input"
+          id="new-task-input"
+          placeholder="Add a new task"
+        />
+        <i class="fa-solid fa-circle-plus" id="add-new-task-btn"></i>
+      </div>
+      <div class="todo-list" id="todo-list"></div>
+    </div>
   </body>
 </html>
