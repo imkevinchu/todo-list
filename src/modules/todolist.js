@@ -1,17 +1,6 @@
-export class Project {
-  constructor(name) {
-    this.name = name;
+export class TodoList {
+  constructor() {
     this.tasks = [];
-  }
-
-  get name() {
-    return this.name;
-  }
-
-  set name(value) {
-    if (value) {
-      this.name = value;
-    }
   }
 
   get tasks() {
@@ -25,7 +14,7 @@ export class Project {
   }
 
   addTask(newTask) {
-    if (!this.isInProject(newTask)) {
+    if (!this.isInList(newTask)) {
       this.tasks.push(newTask);
     }
   }
@@ -38,7 +27,11 @@ export class Project {
     return this.tasks.find((task) => task.name === taskName);
   }
 
-  isInProject(someTask) {
+  sortTasks() {
+    this.tasks.sort((a, b) => a.timeCreated - b.timeCreated);
+  }
+
+  isInList(someTask) {
     return this.tasks.some((task) => task.name === someTask.name);
   }
 

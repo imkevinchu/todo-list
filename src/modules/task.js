@@ -1,9 +1,8 @@
 export class Task {
-  constructor(name, description, dueDate, priority) {
+  constructor(name) {
     this.name = name;
-    this.description = description;
-    this.dueDate = dueDate;
-    this.priority = priority;
+    this.isDone = false;
+    this.timeCreated = new Date().getTime();
   }
 
   get name() {
@@ -16,33 +15,21 @@ export class Task {
     }
   }
 
-  get description() {
-    return this.description;
+  get isDone() {
+    return this.isDone;
   }
 
-  set description(value) {
-    if (value) {
-      this.description = value;
+  set isDone(value) {
+    if (value === true || value === false) {
+      this.isDone = value;
     }
   }
 
-  get dueDate() {
-    return this.dueDate;
+  toggleDone() {
+    this.isDone = !this.isDone;
   }
 
-  set dueDate(value) {
-    if (value) {
-      this.dueDate = this.dueDate;
-    }
-  }
-
-  get priority() {
-    return this.priority;
-  }
-
-  set priority(value) {
-    if (value) {
-      this.priority = value;
-    }
+  get timeCreated() {
+    return this.timeCreated;
   }
 }
