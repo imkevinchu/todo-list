@@ -14,10 +14,21 @@ h1 {
   text-align: center;
 }
 
+input:not([type="checkbox"]),
+button {
+  appearance: none;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: initial;
+}
+
 .input {
   width: 100%;
   display: flex;
   align-items: center;
+  font-size: large;
+  margin-bottom: 1rem;
 }
 
 .input i {
@@ -40,9 +51,101 @@ h1 {
 }
 
 .todo-item {
+  display: flex;
+  align-items: center;
   font-size: large;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
 }
 
 .todo-item:hover {
   cursor: pointer;
+}
+
+.todo-item label {
+  display: block;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.todo-item .todo-name {
+  flex: 1 1 0%;
+}
+
+.todo-item .todo-name input {
+  color: #313154;
+  font-size: 1.125rem;
+}
+
+.todo-item .todo-actions {
+  display: flex;
+  align-items: center;
+}
+
+.todo-item .todo-actions button {
+  display: block;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: large;
+  transition: 0.2s ease-in-out;
+}
+
+.todo-item .todo-actions button:hover {
+  opacity: 0.75;
+}
+
+.todo-item .todo-actions .edit {
+  margin-right: 0.5rem;
+}
+
+.todo-item.done .todo-name input {
+  text-decoration: line-through;
+  color: gray;
+}
+
+/* checkbox */
+
+input[type="checkbox"] {
+  position: relative;
+  border: 2px solid #000;
+  border-radius: 3px;
+  background: none;
+  cursor: pointer;
+  line-height: 0;
+  margin: 0 0.6em 0 0;
+  margin-left: 1em;
+  outline: 0;
+  padding: 0;
+  vertical-align: text-top;
+  height: 20px;
+  width: 20px;
+  -webkit-appearance: none;
+  opacity: 0.5;
+}
+
+input[type="checkbox"]:hover {
+  opacity: 1;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #000;
+  opacity: 1;
+}
+
+input[type="checkbox"]:before {
+  content: "";
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  width: 4px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  margin: -1px -1px 0 -1px;
+  transform: rotate(45deg) translate(-50%, -50%);
+  z-index: 2;
 }

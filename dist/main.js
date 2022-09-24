@@ -1,91 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/modules/project.js":
-/*!********************************!*\
-  !*** ./src/modules/project.js ***!
-  \********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Project": () => (/* binding */ Project)
-/* harmony export */ });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-var Project = /*#__PURE__*/function () {
-  function Project(name) {
-    _classCallCheck(this, Project);
-
-    this.name = name;
-    this.tasks = [];
-  }
-
-  _createClass(Project, [{
-    key: "name",
-    get: function get() {
-      return this.name;
-    },
-    set: function set(value) {
-      if (value) {
-        this.name = value;
-      }
-    }
-  }, {
-    key: "tasks",
-    get: function get() {
-      return this.tasks;
-    },
-    set: function set(value) {
-      if (value) {
-        this.tasks = value;
-      }
-    }
-  }, {
-    key: "addTask",
-    value: function addTask(newTask) {
-      if (!this.isInProject(newTask)) {
-        this.tasks.push(newTask);
-      }
-    }
-  }, {
-    key: "removeTask",
-    value: function removeTask(taskName) {
-      this.tasks = this.tasks.filter(function (task) {
-        return task.name !== taskName;
-      });
-    }
-  }, {
-    key: "getTask",
-    value: function getTask(taskName) {
-      return this.tasks.find(function (task) {
-        return task.name === taskName;
-      });
-    }
-  }, {
-    key: "isInProject",
-    value: function isInProject(someTask) {
-      return this.tasks.some(function (task) {
-        return task.name === someTask.name;
-      });
-    }
-  }, {
-    key: "isEmpty",
-    value: function isEmpty() {
-      return this.tasks.length === 0;
-    }
-  }]);
-
-  return Project;
-}();
-
-/***/ }),
-
 /***/ "./src/modules/task.js":
 /*!*****************************!*\
   !*** ./src/modules/task.js ***!
@@ -104,13 +19,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 var Task = /*#__PURE__*/function () {
-  function Task(name, description, dueDate, priority) {
+  function Task(name) {
     _classCallCheck(this, Task);
 
     this.name = name;
-    this.description = description;
-    this.dueDate = dueDate;
-    this.priority = priority;
+    this.isDone = false;
+    this.timeCreated = new Date().getTime();
   }
 
   _createClass(Task, [{
@@ -124,38 +38,109 @@ var Task = /*#__PURE__*/function () {
       }
     }
   }, {
-    key: "description",
+    key: "isDone",
     get: function get() {
-      return this.description;
+      return this.isDone;
     },
     set: function set(value) {
-      if (value) {
-        this.description = value;
+      if (value === true || value === false) {
+        this.isDone = value;
       }
     }
   }, {
-    key: "dueDate",
-    get: function get() {
-      return this.dueDate;
-    },
-    set: function set(value) {
-      if (value) {
-        this.dueDate = this.dueDate;
-      }
+    key: "toggleDone",
+    value: function toggleDone() {
+      this.isDone = !this.isDone;
     }
   }, {
-    key: "priority",
+    key: "timeCreated",
     get: function get() {
-      return this.priority;
-    },
-    set: function set(value) {
-      if (value) {
-        this.priority = value;
-      }
+      return this.timeCreated;
     }
   }]);
 
   return Task;
+}();
+
+/***/ }),
+
+/***/ "./src/modules/todolist.js":
+/*!*********************************!*\
+  !*** ./src/modules/todolist.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TodoList": () => (/* binding */ TodoList)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var TodoList = /*#__PURE__*/function () {
+  function TodoList() {
+    _classCallCheck(this, TodoList);
+
+    this.tasks = [];
+  }
+
+  _createClass(TodoList, [{
+    key: "tasks",
+    get: function get() {
+      return this.tasks;
+    },
+    set: function set(value) {
+      if (value) {
+        this.tasks = value;
+      }
+    }
+  }, {
+    key: "addTask",
+    value: function addTask(newTask) {
+      if (!this.isInList(newTask)) {
+        this.tasks.push(newTask);
+      }
+    }
+  }, {
+    key: "removeTask",
+    value: function removeTask(taskName) {
+      this.tasks = this.tasks.filter(function (task) {
+        return task.name !== taskName;
+      });
+    }
+  }, {
+    key: "getTask",
+    value: function getTask(taskName) {
+      return this.tasks.find(function (task) {
+        return task.name === taskName;
+      });
+    }
+  }, {
+    key: "sortTasks",
+    value: function sortTasks() {
+      this.tasks.sort(function (a, b) {
+        return a.timeCreated - b.timeCreated;
+      });
+    }
+  }, {
+    key: "isInList",
+    value: function isInList(someTask) {
+      return this.tasks.some(function (task) {
+        return task.name === someTask.name;
+      });
+    }
+  }, {
+    key: "isEmpty",
+    value: function isEmpty() {
+      return this.tasks.length === 0;
+    }
+  }]);
+
+  return TodoList;
 }();
 
 /***/ }),
@@ -216,7 +201,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n  font-family: \"Roboto\", sans-serif;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  height: 600px;\n  margin: 0;\n}\n\nh1 {\n  text-align: center;\n}\n\n.input {\n  width: 100%;\n  display: flex;\n  align-items: center;\n}\n\n.input i {\n  font-size: 28px;\n}\n\n.input i:hover {\n  cursor: pointer;\n}\n\n.input input[type=\"text\"] {\n  background-color: whitesmoke;\n  border-radius: 16px;\n  margin-right: 12px;\n  border: none;\n  padding: 6px 16px;\n  font-size: 16px;\n  width: 600px;\n  height: 28px;\n}\n\n.todo-item {\n  font-size: large;\n}\n\n.todo-item:hover {\n  cursor: pointer;\n}\n", "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAEA;EACE,iCAAiC;EACjC,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,mBAAmB;EACnB,aAAa;EACb,SAAS;AACX;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,aAAa;EACb,mBAAmB;AACrB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,4BAA4B;EAC5B,mBAAmB;EACnB,kBAAkB;EAClB,YAAY;EACZ,iBAAiB;EACjB,eAAe;EACf,YAAY;EACZ,YAAY;AACd;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,eAAe;AACjB","sourcesContent":["@import url(\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap\");\n\nbody {\n  font-family: \"Roboto\", sans-serif;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  height: 600px;\n  margin: 0;\n}\n\nh1 {\n  text-align: center;\n}\n\n.input {\n  width: 100%;\n  display: flex;\n  align-items: center;\n}\n\n.input i {\n  font-size: 28px;\n}\n\n.input i:hover {\n  cursor: pointer;\n}\n\n.input input[type=\"text\"] {\n  background-color: whitesmoke;\n  border-radius: 16px;\n  margin-right: 12px;\n  border: none;\n  padding: 6px 16px;\n  font-size: 16px;\n  width: 600px;\n  height: 28px;\n}\n\n.todo-item {\n  font-size: large;\n}\n\n.todo-item:hover {\n  cursor: pointer;\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n  font-family: \"Roboto\", sans-serif;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  height: 600px;\n  margin: 0;\n}\n\nh1 {\n  text-align: center;\n}\n\ninput:not([type=\"checkbox\"]),\nbutton {\n  appearance: none;\n  border: none;\n  outline: none;\n  background: none;\n  cursor: initial;\n}\n\n.input {\n  width: 100%;\n  display: flex;\n  align-items: center;\n  font-size: large;\n  margin-bottom: 1rem;\n}\n\n.input i {\n  font-size: 28px;\n}\n\n.input i:hover {\n  cursor: pointer;\n}\n\n.input input[type=\"text\"] {\n  background-color: whitesmoke;\n  border-radius: 16px;\n  margin-right: 12px;\n  border: none;\n  padding: 6px 16px;\n  font-size: 16px;\n  width: 600px;\n  height: 28px;\n}\n\n.todo-item {\n  display: flex;\n  align-items: center;\n  font-size: large;\n  background-color: #fff;\n  padding: 1rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);\n  margin-bottom: 1rem;\n}\n\n.todo-item:hover {\n  cursor: pointer;\n}\n\n.todo-item label {\n  display: block;\n  margin-right: 1rem;\n  cursor: pointer;\n}\n\n.todo-item .todo-name {\n  flex: 1 1 0%;\n}\n\n.todo-item .todo-name input {\n  color: #313154;\n  font-size: 1.125rem;\n}\n\n.todo-item .todo-actions {\n  display: flex;\n  align-items: center;\n}\n\n.todo-item .todo-actions button {\n  display: block;\n  padding: 0.5rem;\n  border-radius: 0.25rem;\n  cursor: pointer;\n  font-size: large;\n  transition: 0.2s ease-in-out;\n}\n\n.todo-item .todo-actions button:hover {\n  opacity: 0.75;\n}\n\n.todo-item .todo-actions .edit {\n  margin-right: 0.5rem;\n}\n\n.todo-item.done .todo-name input {\n  text-decoration: line-through;\n  color: gray;\n}\n\n/* checkbox */\n\ninput[type=\"checkbox\"] {\n  position: relative;\n  border: 2px solid #000;\n  border-radius: 3px;\n  background: none;\n  cursor: pointer;\n  line-height: 0;\n  margin: 0 0.6em 0 0;\n  margin-left: 1em;\n  outline: 0;\n  padding: 0;\n  vertical-align: text-top;\n  height: 20px;\n  width: 20px;\n  -webkit-appearance: none;\n  opacity: 0.5;\n}\n\ninput[type=\"checkbox\"]:hover {\n  opacity: 1;\n}\n\ninput[type=\"checkbox\"]:checked {\n  background-color: #000;\n  opacity: 1;\n}\n\ninput[type=\"checkbox\"]:before {\n  content: \"\";\n  position: absolute;\n  right: 50%;\n  top: 50%;\n  width: 4px;\n  height: 10px;\n  border: solid #fff;\n  border-width: 0 2px 2px 0;\n  margin: -1px -1px 0 -1px;\n  transform: rotate(45deg) translate(-50%, -50%);\n  z-index: 2;\n}\n", "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAEA;EACE,iCAAiC;EACjC,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,mBAAmB;EACnB,aAAa;EACb,SAAS;AACX;;AAEA;EACE,kBAAkB;AACpB;;AAEA;;EAEE,gBAAgB;EAChB,YAAY;EACZ,aAAa;EACb,gBAAgB;EAChB,eAAe;AACjB;;AAEA;EACE,WAAW;EACX,aAAa;EACb,mBAAmB;EACnB,gBAAgB;EAChB,mBAAmB;AACrB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,4BAA4B;EAC5B,mBAAmB;EACnB,kBAAkB;EAClB,YAAY;EACZ,iBAAiB;EACjB,eAAe;EACf,YAAY;EACZ,YAAY;AACd;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,gBAAgB;EAChB,sBAAsB;EACtB,aAAa;EACb,qBAAqB;EACrB,wCAAwC;EACxC,mBAAmB;AACrB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,cAAc;EACd,kBAAkB;EAClB,eAAe;AACjB;;AAEA;EACE,YAAY;AACd;;AAEA;EACE,cAAc;EACd,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,mBAAmB;AACrB;;AAEA;EACE,cAAc;EACd,eAAe;EACf,sBAAsB;EACtB,eAAe;EACf,gBAAgB;EAChB,4BAA4B;AAC9B;;AAEA;EACE,aAAa;AACf;;AAEA;EACE,oBAAoB;AACtB;;AAEA;EACE,6BAA6B;EAC7B,WAAW;AACb;;AAEA,aAAa;;AAEb;EACE,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,gBAAgB;EAChB,eAAe;EACf,cAAc;EACd,mBAAmB;EACnB,gBAAgB;EAChB,UAAU;EACV,UAAU;EACV,wBAAwB;EACxB,YAAY;EACZ,WAAW;EACX,wBAAwB;EACxB,YAAY;AACd;;AAEA;EACE,UAAU;AACZ;;AAEA;EACE,sBAAsB;EACtB,UAAU;AACZ;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,UAAU;EACV,QAAQ;EACR,UAAU;EACV,YAAY;EACZ,kBAAkB;EAClB,yBAAyB;EACzB,wBAAwB;EACxB,8CAA8C;EAC9C,UAAU;AACZ","sourcesContent":["@import url(\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap\");\n\nbody {\n  font-family: \"Roboto\", sans-serif;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  height: 600px;\n  margin: 0;\n}\n\nh1 {\n  text-align: center;\n}\n\ninput:not([type=\"checkbox\"]),\nbutton {\n  appearance: none;\n  border: none;\n  outline: none;\n  background: none;\n  cursor: initial;\n}\n\n.input {\n  width: 100%;\n  display: flex;\n  align-items: center;\n  font-size: large;\n  margin-bottom: 1rem;\n}\n\n.input i {\n  font-size: 28px;\n}\n\n.input i:hover {\n  cursor: pointer;\n}\n\n.input input[type=\"text\"] {\n  background-color: whitesmoke;\n  border-radius: 16px;\n  margin-right: 12px;\n  border: none;\n  padding: 6px 16px;\n  font-size: 16px;\n  width: 600px;\n  height: 28px;\n}\n\n.todo-item {\n  display: flex;\n  align-items: center;\n  font-size: large;\n  background-color: #fff;\n  padding: 1rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);\n  margin-bottom: 1rem;\n}\n\n.todo-item:hover {\n  cursor: pointer;\n}\n\n.todo-item label {\n  display: block;\n  margin-right: 1rem;\n  cursor: pointer;\n}\n\n.todo-item .todo-name {\n  flex: 1 1 0%;\n}\n\n.todo-item .todo-name input {\n  color: #313154;\n  font-size: 1.125rem;\n}\n\n.todo-item .todo-actions {\n  display: flex;\n  align-items: center;\n}\n\n.todo-item .todo-actions button {\n  display: block;\n  padding: 0.5rem;\n  border-radius: 0.25rem;\n  cursor: pointer;\n  font-size: large;\n  transition: 0.2s ease-in-out;\n}\n\n.todo-item .todo-actions button:hover {\n  opacity: 0.75;\n}\n\n.todo-item .todo-actions .edit {\n  margin-right: 0.5rem;\n}\n\n.todo-item.done .todo-name input {\n  text-decoration: line-through;\n  color: gray;\n}\n\n/* checkbox */\n\ninput[type=\"checkbox\"] {\n  position: relative;\n  border: 2px solid #000;\n  border-radius: 3px;\n  background: none;\n  cursor: pointer;\n  line-height: 0;\n  margin: 0 0.6em 0 0;\n  margin-left: 1em;\n  outline: 0;\n  padding: 0;\n  vertical-align: text-top;\n  height: 20px;\n  width: 20px;\n  -webkit-appearance: none;\n  opacity: 0.5;\n}\n\ninput[type=\"checkbox\"]:hover {\n  opacity: 1;\n}\n\ninput[type=\"checkbox\"]:checked {\n  background-color: #000;\n  opacity: 1;\n}\n\ninput[type=\"checkbox\"]:before {\n  content: \"\";\n  position: absolute;\n  right: 50%;\n  top: 50%;\n  width: 4px;\n  height: 10px;\n  border: solid #fff;\n  border-width: 0 2px 2px 0;\n  margin: -1px -1px 0 -1px;\n  transform: rotate(45deg) translate(-50%, -50%);\n  z-index: 2;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -815,7 +800,7 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modules_project__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/project */ "./src/modules/project.js");
+/* harmony import */ var _modules_todolist__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/todolist */ "./src/modules/todolist.js");
 /* harmony import */ var _modules_task__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/task */ "./src/modules/task.js");
 /* harmony import */ var _modules_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/ui */ "./src/modules/ui.js");
 /* harmony import */ var _modules_ui__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_modules_ui__WEBPACK_IMPORTED_MODULE_2__);
