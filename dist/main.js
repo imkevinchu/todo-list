@@ -191,6 +191,14 @@ var createTodoItem = function createTodoItem(newTaskName) {
       todoItem.classList.remove("done");
     }
   });
+  editBtn.addEventListener("click", function () {
+    todoNameInput.removeAttribute("readonly");
+    todoNameInput.focus();
+    todoNameInput.select();
+    todoNameInput.addEventListener("blur", function (e) {
+      todoNameInput.setAttribute("readonly", true);
+    });
+  });
   deleteBtn.addEventListener("click", function () {
     if (todoItem.parentNode) {
       todoItem.parentNode.removeChild(todoItem);

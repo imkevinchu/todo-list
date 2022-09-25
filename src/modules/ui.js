@@ -43,6 +43,15 @@ const createTodoItem = (newTaskName) => {
     }
   });
 
+  editBtn.addEventListener("click", () => {
+    todoNameInput.removeAttribute("readonly");
+    todoNameInput.focus();
+    todoNameInput.select();
+    todoNameInput.addEventListener("blur", () => {
+      todoNameInput.setAttribute("readonly", true);
+    });
+  });
+
   deleteBtn.addEventListener("click", () => {
     if (todoItem.parentNode) {
       todoItem.parentNode.removeChild(todoItem);
