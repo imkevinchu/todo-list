@@ -61,10 +61,6 @@ button {
   margin-bottom: 1rem;
 }
 
-.todo-item:hover {
-  cursor: pointer;
-}
-
 .todo-item label {
   display: block;
   margin-right: 1rem;
