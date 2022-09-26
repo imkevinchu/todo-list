@@ -2,7 +2,6 @@ export class Task {
   constructor(name) {
     this._name = name;
     this._isDone = false;
-    this._timeCreated = new Date().getTime();
   }
 
   get name() {
@@ -27,15 +26,5 @@ export class Task {
 
   toggleDone() {
     this._isDone = !this._isDone;
-  }
-
-  get timeCreated() {
-    return this._timeCreated;
-  }
-
-  set timeCreated(value) {
-    if (value) {
-      this._timeCreated = value;
-    }
   }
 }

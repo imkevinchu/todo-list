@@ -29,10 +29,6 @@ export class TodoList {
     return this._tasks.find((task) => task.name === taskName);
   }
 
-  sortTasks() {
-    this._tasks.sort((a, b) => a.timeCreated - b.timeCreated);
-  }
-
   isInList(someTask) {
     return this._tasks.some((task) => task.name === someTask.name);
   }
