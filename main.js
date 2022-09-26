@@ -24,7 +24,6 @@ var Task = /*#__PURE__*/function () {
 
     this._name = name;
     this._isDone = false;
-    this._timeCreated = new Date().getTime();
   }
 
   _createClass(Task, [{
@@ -51,16 +50,6 @@ var Task = /*#__PURE__*/function () {
     key: "toggleDone",
     value: function toggleDone() {
       this._isDone = !this._isDone;
-    }
-  }, {
-    key: "timeCreated",
-    get: function get() {
-      return this._timeCreated;
-    },
-    set: function set(value) {
-      if (value) {
-        this._timeCreated = value;
-      }
     }
   }]);
 
@@ -126,13 +115,6 @@ var TodoList = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "sortTasks",
-    value: function sortTasks() {
-      this._tasks.sort(function (a, b) {
-        return a.timeCreated - b.timeCreated;
-      });
-    }
-  }, {
     key: "isInList",
     value: function isInList(someTask) {
       return this._tasks.some(function (task) {
@@ -162,7 +144,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _todolist__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todolist */ "./src/modules/todolist.js");
 
 
-var todoListArray = new _todolist__WEBPACK_IMPORTED_MODULE_1__.TodoList();
+
+var parseTodoList = function parseTodoList() {
+  var todoListArray = Object.assign(new _todolist__WEBPACK_IMPORTED_MODULE_1__.TodoList(), JSON.parse(localStorage.getItem("todolist")));
+  todoListArray.tasks = todoListArray.tasks.map(function (task) {
+    return Object.assign(new _task__WEBPACK_IMPORTED_MODULE_0__.Task(), task);
+  });
+  return todoListArray;
+};
+
+var todoListArray = parseTodoList() || new _todolist__WEBPACK_IMPORTED_MODULE_1__.TodoList();
 var addNewTaskBtn = document.getElementById("add-new-task-btn");
 var todoInput = document.getElementById("new-task-input");
 var todoList = document.getElementById("todo-list");
@@ -206,9 +197,11 @@ var createTodoItem = function createTodoItem(newTaskName, isDone) {
     if (e.target.checked) {
       todoItem.classList.add("done");
       todoListArray.getTask(newTaskName).toggleDone();
+      localStorage.setItem("todolist", JSON.stringify(todoListArray));
     } else {
       todoItem.classList.remove("done");
       todoListArray.getTask(newTaskName).toggleDone();
+      localStorage.setItem("todolist", JSON.stringify(todoListArray));
     }
 
     displayTodoList();
@@ -220,11 +213,13 @@ var createTodoItem = function createTodoItem(newTaskName, isDone) {
     todoNameInput.addEventListener("blur", function () {
       todoNameInput.setAttribute("readonly", true);
       todoListArray.getTask(newTaskName).name = todoNameInput.value;
+      localStorage.setItem("todolist", JSON.stringify(todoListArray));
       displayTodoList();
     });
   });
   deleteBtn.addEventListener("click", function () {
     todoListArray.removeTask(newTaskName);
+    localStorage.setItem("todolist", JSON.stringify(todoListArray));
     displayTodoList();
   });
   todoItem.appendChild(label);
@@ -241,6 +236,7 @@ var addNewTask = function addNewTask() {
 
   var newTask = new _task__WEBPACK_IMPORTED_MODULE_0__.Task(todoInput.value, false);
   todoListArray.addTask(newTask);
+  localStorage.setItem("todolist", JSON.stringify(todoListArray));
   displayTodoList();
   todoInput.value = "";
 };
@@ -259,6 +255,10 @@ todoInput.addEventListener("keypress", function (e) {
     addNewTask();
   }
 });
+
+window.onload = function () {
+  displayTodoList();
+};
 
 /***/ }),
 
