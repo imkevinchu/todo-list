@@ -1,8 +1,12 @@
+import { Task } from "./task";
+import { TodoList } from "./todolist";
+
+const todoListArray = new TodoList();
 const addNewTaskBtn = document.getElementById("add-new-task-btn");
 const todoInput = document.getElementById("new-task-input");
 const todoList = document.getElementById("todo-list");
 
-const createTodoItem = (newTaskName) => {
+const createTodoItem = (newTaskName, isDone) => {
   const todoItem = document.createElement("div");
   const todoName = document.createElement("div");
   const todoActions = document.createElement("div");
@@ -14,6 +18,10 @@ const createTodoItem = (newTaskName) => {
   const checkbox = document.createElement("input");
   checkbox.setAttribute("type", "checkbox");
   checkbox.setAttribute("id", "checkbox");
+  if (isDone) {
+    checkbox.checked = true;
+    todoItem.classList.add("done");
+  }
   label.appendChild(checkbox);
 
   const todoNameInput = document.createElement("input");
@@ -38,9 +46,12 @@ const createTodoItem = (newTaskName) => {
   checkbox.addEventListener("change", (e) => {
     if (e.target.checked) {
       todoItem.classList.add("done");
+      todoListArray.getTask(newTaskName).toggleDone();
     } else {
       todoItem.classList.remove("done");
+      todoListArray.getTask(newTaskName).toggleDone();
     }
+    displayTodoList();
   });
 
   editBtn.addEventListener("click", () => {
@@ -49,13 +60,14 @@ const createTodoItem = (newTaskName) => {
     todoNameInput.select();
     todoNameInput.addEventListener("blur", () => {
       todoNameInput.setAttribute("readonly", true);
+      todoListArray.getTask(newTaskName).name = todoNameInput.value;
+      displayTodoList();
     });
   });
 
   deleteBtn.addEventListener("click", () => {
-    if (todoItem.parentNode) {
-      todoItem.parentNode.removeChild(todoItem);
-    }
+    todoListArray.removeTask(newTaskName);
+    displayTodoList();
   });
 
   todoItem.appendChild(label);
@@ -69,10 +81,18 @@ const addNewTask = () => {
     alert("Please input a task");
     return false;
   }
-  const newTask = createTodoItem(todoInput.value);
-  todoList.appendChild(newTask);
+  const newTask = new Task(todoInput.value, false);
+  todoListArray.addTask(newTask);
+  displayTodoList();
 
   todoInput.value = "";
+};
+
+const displayTodoList = () => {
+  todoList.innerHTML = "";
+  todoListArray._tasks.forEach((todo) => {
+    todoList.appendChild(createTodoItem(todo.name, todo.isDone));
+  });
 };
 
 addNewTaskBtn.addEventListener("click", addNewTask);

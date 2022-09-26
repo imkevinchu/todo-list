@@ -1,35 +1,41 @@
 export class Task {
   constructor(name) {
-    this.name = name;
-    this.isDone = false;
-    this.timeCreated = new Date().getTime();
+    this._name = name;
+    this._isDone = false;
+    this._timeCreated = new Date().getTime();
   }
 
   get name() {
-    return this.name;
+    return this._name;
   }
 
   set name(value) {
     if (value) {
-      this.name = value;
+      this._name = value;
     }
   }
 
   get isDone() {
-    return this.isDone;
+    return this._isDone;
   }
 
   set isDone(value) {
     if (value === true || value === false) {
-      this.isDone = value;
+      this._isDone = value;
     }
   }
 
   toggleDone() {
-    this.isDone = !this.isDone;
+    this._isDone = !this._isDone;
   }
 
   get timeCreated() {
-    return this.timeCreated;
+    return this._timeCreated;
+  }
+
+  set timeCreated(value) {
+    if (value) {
+      this._timeCreated = value;
+    }
   }
 }

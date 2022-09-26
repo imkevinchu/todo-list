@@ -1,41 +1,41 @@
 export class TodoList {
   constructor() {
-    this.tasks = [];
+    this._tasks = [];
   }
 
   get tasks() {
-    return this.tasks;
+    return this._tasks;
   }
 
   set tasks(value) {
     if (value) {
-      this.tasks = value;
+      this._tasks = value;
     }
   }
 
   addTask(newTask) {
     if (!this.isInList(newTask)) {
-      this.tasks.push(newTask);
+      this._tasks.push(newTask);
     }
   }
 
   removeTask(taskName) {
-    this.tasks = this.tasks.filter((task) => task.name !== taskName);
+    this._tasks = this._tasks.filter((task) => task.name !== taskName);
   }
 
   getTask(taskName) {
-    return this.tasks.find((task) => task.name === taskName);
+    return this._tasks.find((task) => task.name === taskName);
   }
 
   sortTasks() {
-    this.tasks.sort((a, b) => a.timeCreated - b.timeCreated);
+    this._tasks.sort((a, b) => a.timeCreated - b.timeCreated);
   }
 
   isInList(someTask) {
-    return this.tasks.some((task) => task.name === someTask.name);
+    return this._tasks.some((task) => task.name === someTask.name);
   }
 
   isEmpty() {
-    return this.tasks.length === 0;
+    return this._tasks.length === 0;
   }
 }

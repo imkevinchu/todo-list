@@ -6,8 +6,12 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 600px;
   margin: 0;
+  overflow: scroll;
+}
+
+.input-container {
+  margin-top: 33vh;
 }
 
 h1 {
