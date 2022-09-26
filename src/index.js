@@ -1,4 +1,4 @@
-import { TodoList } from "./modules/todolist";
-import { Task } from "./modules/task";
-import "./modules/ui";
+import { TodoList } from "./modules/TodoList";
+import { Task } from "./modules/Task";
+import "./modules/UI";
 import "./style.css";

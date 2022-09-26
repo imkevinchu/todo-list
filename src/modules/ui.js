@@ -1,5 +1,5 @@
-import { Task } from "./task";
-import { TodoList } from "./todolist";
+import { Task } from "./Task";
+import { TodoList } from "./TodoList";
 
 const parseLocalStorage = () => {
   const todoListArray = Object.assign(

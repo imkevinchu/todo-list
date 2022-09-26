@@ -2,9 +2,9 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/modules/task.js":
+/***/ "./src/modules/Task.js":
 /*!*****************************!*\
-  !*** ./src/modules/task.js ***!
+  !*** ./src/modules/Task.js ***!
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -58,9 +58,9 @@ var Task = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./src/modules/todolist.js":
+/***/ "./src/modules/TodoList.js":
 /*!*********************************!*\
-  !*** ./src/modules/todolist.js ***!
+  !*** ./src/modules/TodoList.js ***!
   \*********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -133,27 +133,27 @@ var TodoList = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./src/modules/ui.js":
+/***/ "./src/modules/UI.js":
 /*!***************************!*\
-  !*** ./src/modules/ui.js ***!
+  !*** ./src/modules/UI.js ***!
   \***************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _task__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./task */ "./src/modules/task.js");
-/* harmony import */ var _todolist__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todolist */ "./src/modules/todolist.js");
+/* harmony import */ var _Task__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Task */ "./src/modules/Task.js");
+/* harmony import */ var _TodoList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TodoList */ "./src/modules/TodoList.js");
 
 
 
-var parseTodoList = function parseTodoList() {
-  var todoListArray = Object.assign(new _todolist__WEBPACK_IMPORTED_MODULE_1__.TodoList(), JSON.parse(localStorage.getItem("todolist")));
+var parseLocalStorage = function parseLocalStorage() {
+  var todoListArray = Object.assign(new _TodoList__WEBPACK_IMPORTED_MODULE_1__.TodoList(), JSON.parse(localStorage.getItem("todolist")));
   todoListArray.tasks = todoListArray.tasks.map(function (task) {
-    return Object.assign(new _task__WEBPACK_IMPORTED_MODULE_0__.Task(), task);
+    return Object.assign(new _Task__WEBPACK_IMPORTED_MODULE_0__.Task(), task);
   });
   return todoListArray;
 };
 
-var todoListArray = parseTodoList() || new _todolist__WEBPACK_IMPORTED_MODULE_1__.TodoList();
+var todoListArray = parseLocalStorage();
 var addNewTaskBtn = document.getElementById("add-new-task-btn");
 var todoInput = document.getElementById("new-task-input");
 var todoList = document.getElementById("todo-list");
@@ -234,7 +234,7 @@ var addNewTask = function addNewTask() {
     return false;
   }
 
-  var newTask = new _task__WEBPACK_IMPORTED_MODULE_0__.Task(todoInput.value, false);
+  var newTask = new _Task__WEBPACK_IMPORTED_MODULE_0__.Task(todoInput.value, false);
   todoListArray.addTask(newTask);
   localStorage.setItem("todolist", JSON.stringify(todoListArray));
   displayTodoList();
@@ -871,9 +871,9 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modules_todolist__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/todolist */ "./src/modules/todolist.js");
-/* harmony import */ var _modules_task__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/task */ "./src/modules/task.js");
-/* harmony import */ var _modules_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/ui */ "./src/modules/ui.js");
+/* harmony import */ var _modules_TodoList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/TodoList */ "./src/modules/TodoList.js");
+/* harmony import */ var _modules_Task__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/Task */ "./src/modules/Task.js");
+/* harmony import */ var _modules_UI__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/UI */ "./src/modules/UI.js");
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./style.css */ "./src/style.css");
 
 
