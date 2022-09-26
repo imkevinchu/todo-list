@@ -16,6 +16,8 @@ export class TodoList {
   addTask(newTask) {
     if (!this.isInList(newTask)) {
       this._tasks.push(newTask);
+    } else {
+      alert(`"${newTask.name}" is already in your todo list`);
     }
   }
 

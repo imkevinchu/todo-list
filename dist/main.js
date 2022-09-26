@@ -107,6 +107,8 @@ var TodoList = /*#__PURE__*/function () {
     value: function addTask(newTask) {
       if (!this.isInList(newTask)) {
         this._tasks.push(newTask);
+      } else {
+        alert("\"".concat(newTask.name, "\" is already in your todo list"));
       }
     }
   }, {
