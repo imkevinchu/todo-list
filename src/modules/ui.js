@@ -1,18 +1,8 @@
 import { Task } from "./Task";
 import { TodoList } from "./TodoList";
+import { Storage } from "./Storage";
 
-const parseLocalStorage = () => {
-  const todoListArray = Object.assign(
-    new TodoList(),
-    JSON.parse(localStorage.getItem("todolist"))
-  );
-  todoListArray.tasks = todoListArray.tasks.map((task) =>
-    Object.assign(new Task(), task)
-  );
-  return todoListArray;
-};
-
-const todoListArray = parseLocalStorage();
+const todoListArray = Storage.parseLocalStorage();
 const addNewTaskBtn = document.getElementById("add-new-task-btn");
 const todoInput = document.getElementById("new-task-input");
 const todoList = document.getElementById("todo-list");
@@ -58,11 +48,11 @@ const createTodoItem = (newTaskName, isDone) => {
     if (e.target.checked) {
       todoItem.classList.add("done");
       todoListArray.getTask(newTaskName).toggleDone();
-      localStorage.setItem("todolist", JSON.stringify(todoListArray));
+      Storage.saveTodoList(todoListArray);
     } else {
       todoItem.classList.remove("done");
       todoListArray.getTask(newTaskName).toggleDone();
-      localStorage.setItem("todolist", JSON.stringify(todoListArray));
+      Storage.saveTodoList(todoListArray);
     }
     displayTodoList();
   });
@@ -74,14 +64,14 @@ const createTodoItem = (newTaskName, isDone) => {
     todoNameInput.addEventListener("blur", () => {
       todoNameInput.setAttribute("readonly", true);
       todoListArray.getTask(newTaskName).name = todoNameInput.value;
-      localStorage.setItem("todolist", JSON.stringify(todoListArray));
+      Storage.saveTodoList(todoListArray);
       displayTodoList();
     });
   });
 
   deleteBtn.addEventListener("click", () => {
     todoListArray.removeTask(newTaskName);
-    localStorage.setItem("todolist", JSON.stringify(todoListArray));
+    Storage.saveTodoList(todoListArray);
     displayTodoList();
   });
 
@@ -98,7 +88,7 @@ const addNewTask = () => {
   }
   const newTask = new Task(todoInput.value, false);
   todoListArray.addTask(newTask);
-  localStorage.setItem("todolist", JSON.stringify(todoListArray));
+  Storage.saveTodoList(todoListArray);
   displayTodoList();
 
   todoInput.value = "";
@@ -106,7 +96,7 @@ const addNewTask = () => {
 
 const displayTodoList = () => {
   todoList.innerHTML = "";
-  todoListArray._tasks.forEach((todo) => {
+  todoListArray.tasks.forEach((todo) => {
     todoList.appendChild(createTodoItem(todo.name, todo.isDone));
   });
 };
