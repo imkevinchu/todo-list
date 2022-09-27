@@ -180,24 +180,58 @@ var TodoList = /*#__PURE__*/function () {
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "UI": () => (/* binding */ UI)
+/* harmony export */ });
 /* harmony import */ var _Task__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Task */ "./src/modules/Task.js");
-/* harmony import */ var _TodoList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TodoList */ "./src/modules/TodoList.js");
-/* harmony import */ var _Storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Storage */ "./src/modules/Storage.js");
+/* harmony import */ var _Storage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Storage */ "./src/modules/Storage.js");
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
-var todoListArray = _Storage__WEBPACK_IMPORTED_MODULE_2__.Storage.parseLocalStorage();
-var addNewTaskBtn = document.getElementById("add-new-task-btn");
-var todoInput = document.getElementById("new-task-input");
-var todoList = document.getElementById("todo-list");
+var todoListArray = _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.parseLocalStorage();
+var UI = /*#__PURE__*/_createClass(function UI() {
+  _classCallCheck(this, UI);
+});
 
-var createTodoItem = function createTodoItem(newTaskName, isDone) {
+_defineProperty(UI, "addNewTask", function () {
+  var todoInput = document.getElementById("new-task-input");
+  var newTask = new _Task__WEBPACK_IMPORTED_MODULE_0__.Task(todoInput.value, false);
+
+  if (todoInput.value == "") {
+    alert("Please input a task");
+    return false;
+  }
+
+  todoListArray.addTask(newTask);
+  _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
+  todoInput.value = "";
+  UI.displayTodoList();
+});
+
+_defineProperty(UI, "displayTodoList", function () {
+  var todoList = document.getElementById("todo-list");
+  todoList.innerHTML = "";
+  todoListArray.tasks.forEach(function (todo) {
+    todoList.appendChild(UI.createTodoItem(todo.name, todo.isDone));
+  });
+});
+
+_defineProperty(UI, "createTodoItem", function (newTaskName, isDone) {
   var todoItem = document.createElement("div");
   var todoName = document.createElement("div");
   var todoActions = document.createElement("div");
   todoItem.classList.add("todo-item");
   todoName.classList.add("todo-name");
   todoActions.classList.add("todo-actions");
+  /* Create checkbox element */
+
   var label = document.createElement("label");
   var checkbox = document.createElement("input");
   checkbox.setAttribute("type", "checkbox");
@@ -209,11 +243,15 @@ var createTodoItem = function createTodoItem(newTaskName, isDone) {
   }
 
   label.appendChild(checkbox);
+  /* Create task name element */
+
   var todoNameInput = document.createElement("input");
   todoNameInput.setAttribute("type", "text");
   todoNameInput.setAttribute("value", "".concat(newTaskName));
   todoNameInput.setAttribute("readonly", true);
   todoName.appendChild(todoNameInput);
+  /* Create edit and delete buttons */
+
   var editBtn = document.createElement("button");
   var deleteBtn = document.createElement("button");
   var editBtnIcon = document.createElement("i");
@@ -230,14 +268,14 @@ var createTodoItem = function createTodoItem(newTaskName, isDone) {
     if (e.target.checked) {
       todoItem.classList.add("done");
       todoListArray.getTask(newTaskName).toggleDone();
-      _Storage__WEBPACK_IMPORTED_MODULE_2__.Storage.saveTodoList(todoListArray);
+      _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
     } else {
       todoItem.classList.remove("done");
       todoListArray.getTask(newTaskName).toggleDone();
-      _Storage__WEBPACK_IMPORTED_MODULE_2__.Storage.saveTodoList(todoListArray);
+      _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
     }
 
-    displayTodoList();
+    UI.displayTodoList();
   });
   editBtn.addEventListener("click", function () {
     todoNameInput.removeAttribute("readonly");
@@ -246,51 +284,35 @@ var createTodoItem = function createTodoItem(newTaskName, isDone) {
     todoNameInput.addEventListener("blur", function () {
       todoNameInput.setAttribute("readonly", true);
       todoListArray.getTask(newTaskName).name = todoNameInput.value;
-      _Storage__WEBPACK_IMPORTED_MODULE_2__.Storage.saveTodoList(todoListArray);
-      displayTodoList();
+      _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
+      UI.displayTodoList();
     });
   });
   deleteBtn.addEventListener("click", function () {
     todoListArray.removeTask(newTaskName);
-    _Storage__WEBPACK_IMPORTED_MODULE_2__.Storage.saveTodoList(todoListArray);
-    displayTodoList();
+    _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
+    UI.displayTodoList();
   });
   todoItem.appendChild(label);
   todoItem.appendChild(todoName);
   todoItem.appendChild(todoActions);
   return todoItem;
-};
-
-var addNewTask = function addNewTask() {
-  if (todoInput.value == "") {
-    alert("Please input a task");
-    return false;
-  }
-
-  var newTask = new _Task__WEBPACK_IMPORTED_MODULE_0__.Task(todoInput.value, false);
-  todoListArray.addTask(newTask);
-  _Storage__WEBPACK_IMPORTED_MODULE_2__.Storage.saveTodoList(todoListArray);
-  displayTodoList();
-  todoInput.value = "";
-};
-
-var displayTodoList = function displayTodoList() {
-  todoList.innerHTML = "";
-  todoListArray.tasks.forEach(function (todo) {
-    todoList.appendChild(createTodoItem(todo.name, todo.isDone));
-  });
-};
-
-addNewTaskBtn.addEventListener("click", addNewTask);
-todoInput.addEventListener("keypress", function (e) {
-  if (e.key === "Enter") {
-    addNewTask();
-  }
 });
 
-window.onload = function () {
-  displayTodoList();
-};
+_defineProperty(UI, "initializeApp", function () {
+  var addNewTaskBtn = document.getElementById("add-new-task-btn");
+  var todoInput = document.getElementById("new-task-input");
+  addNewTaskBtn.addEventListener("click", UI.addNewTask);
+  todoInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      UI.addNewTask();
+    }
+  });
+
+  window.onload = function () {
+    UI.displayTodoList();
+  };
+});
 
 /***/ }),
 
@@ -911,6 +933,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+_modules_UI__WEBPACK_IMPORTED_MODULE_2__.UI.initializeApp();
 })();
 
 /******/ })()
