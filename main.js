@@ -2,6 +2,46 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/modules/Storage.js":
+/*!********************************!*\
+  !*** ./src/modules/Storage.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Storage": () => (/* binding */ Storage)
+/* harmony export */ });
+/* harmony import */ var _TodoList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TodoList */ "./src/modules/TodoList.js");
+/* harmony import */ var _Task__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Task */ "./src/modules/Task.js");
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var Storage = /*#__PURE__*/_createClass(function Storage() {
+  _classCallCheck(this, Storage);
+});
+
+_defineProperty(Storage, "parseLocalStorage", function () {
+  var todoListArray = Object.assign(new _TodoList__WEBPACK_IMPORTED_MODULE_0__.TodoList(), JSON.parse(localStorage.getItem("todolist")));
+  todoListArray.tasks = todoListArray.tasks.map(function (task) {
+    return Object.assign(new _Task__WEBPACK_IMPORTED_MODULE_1__.Task(), task);
+  });
+  return todoListArray;
+});
+
+_defineProperty(Storage, "saveTodoList", function (todoListArray) {
+  localStorage.setItem("todolist", JSON.stringify(todoListArray));
+});
+
+/***/ }),
+
 /***/ "./src/modules/Task.js":
 /*!*****************************!*\
   !*** ./src/modules/Task.js ***!
@@ -142,18 +182,11 @@ var TodoList = /*#__PURE__*/function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Task__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Task */ "./src/modules/Task.js");
 /* harmony import */ var _TodoList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TodoList */ "./src/modules/TodoList.js");
+/* harmony import */ var _Storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Storage */ "./src/modules/Storage.js");
 
 
 
-var parseLocalStorage = function parseLocalStorage() {
-  var todoListArray = Object.assign(new _TodoList__WEBPACK_IMPORTED_MODULE_1__.TodoList(), JSON.parse(localStorage.getItem("todolist")));
-  todoListArray.tasks = todoListArray.tasks.map(function (task) {
-    return Object.assign(new _Task__WEBPACK_IMPORTED_MODULE_0__.Task(), task);
-  });
-  return todoListArray;
-};
-
-var todoListArray = parseLocalStorage();
+var todoListArray = _Storage__WEBPACK_IMPORTED_MODULE_2__.Storage.parseLocalStorage();
 var addNewTaskBtn = document.getElementById("add-new-task-btn");
 var todoInput = document.getElementById("new-task-input");
 var todoList = document.getElementById("todo-list");
@@ -197,11 +230,11 @@ var createTodoItem = function createTodoItem(newTaskName, isDone) {
     if (e.target.checked) {
       todoItem.classList.add("done");
       todoListArray.getTask(newTaskName).toggleDone();
-      localStorage.setItem("todolist", JSON.stringify(todoListArray));
+      _Storage__WEBPACK_IMPORTED_MODULE_2__.Storage.saveTodoList(todoListArray);
     } else {
       todoItem.classList.remove("done");
       todoListArray.getTask(newTaskName).toggleDone();
-      localStorage.setItem("todolist", JSON.stringify(todoListArray));
+      _Storage__WEBPACK_IMPORTED_MODULE_2__.Storage.saveTodoList(todoListArray);
     }
 
     displayTodoList();
@@ -213,13 +246,13 @@ var createTodoItem = function createTodoItem(newTaskName, isDone) {
     todoNameInput.addEventListener("blur", function () {
       todoNameInput.setAttribute("readonly", true);
       todoListArray.getTask(newTaskName).name = todoNameInput.value;
-      localStorage.setItem("todolist", JSON.stringify(todoListArray));
+      _Storage__WEBPACK_IMPORTED_MODULE_2__.Storage.saveTodoList(todoListArray);
       displayTodoList();
     });
   });
   deleteBtn.addEventListener("click", function () {
     todoListArray.removeTask(newTaskName);
-    localStorage.setItem("todolist", JSON.stringify(todoListArray));
+    _Storage__WEBPACK_IMPORTED_MODULE_2__.Storage.saveTodoList(todoListArray);
     displayTodoList();
   });
   todoItem.appendChild(label);
@@ -236,15 +269,14 @@ var addNewTask = function addNewTask() {
 
   var newTask = new _Task__WEBPACK_IMPORTED_MODULE_0__.Task(todoInput.value, false);
   todoListArray.addTask(newTask);
-  localStorage.setItem("todolist", JSON.stringify(todoListArray));
+  _Storage__WEBPACK_IMPORTED_MODULE_2__.Storage.saveTodoList(todoListArray);
   displayTodoList();
   todoInput.value = "";
 };
 
 var displayTodoList = function displayTodoList() {
   todoList.innerHTML = "";
-
-  todoListArray._tasks.forEach(function (todo) {
+  todoListArray.tasks.forEach(function (todo) {
     todoList.appendChild(createTodoItem(todo.name, todo.isDone));
   });
 };
