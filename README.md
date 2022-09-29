@@ -2,6 +2,8 @@
 
 Minimalist todo list app based on the [todo list assignment on The Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-todo-list).
 
+[Live webapp on GitHub pages](https://imkevinchu.github.io/todo-list/)
+
 ## Overview
 
 ### Highlights
@@ -15,5 +17,4 @@ Minimalist todo list app based on the [todo list assignment on The Odin Project]
 
 ### Preview
 
-[Live webapp on GitHub pages](https://imkevinchu.github.io/todo-list/)
 ![](./preview.jpg)
