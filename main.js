@@ -223,15 +223,7 @@ _defineProperty(UI, "displayTodoList", function () {
   });
 });
 
-_defineProperty(UI, "createTodoItem", function (newTaskName, isDone) {
-  var todoItem = document.createElement("div");
-  var todoName = document.createElement("div");
-  var todoActions = document.createElement("div");
-  todoItem.classList.add("todo-item");
-  todoName.classList.add("todo-name");
-  todoActions.classList.add("todo-actions");
-  /* Create checkbox element */
-
+_defineProperty(UI, "createCheckbox", function (newTaskName, isDone, todoItem) {
   var label = document.createElement("label");
   var checkbox = document.createElement("input");
   checkbox.setAttribute("type", "checkbox");
@@ -243,15 +235,40 @@ _defineProperty(UI, "createTodoItem", function (newTaskName, isDone) {
   }
 
   label.appendChild(checkbox);
-  /* Create task name element */
 
-  var todoNameInput = document.createElement("input");
+  var toggleTaskDone = function toggleTaskDone() {
+    todoListArray.getTask(newTaskName).toggleDone();
+    _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
+    UI.displayTodoList();
+  };
+
+  var toggleCheckbox = function toggleCheckbox(e) {
+    if (e.target.checked) {
+      todoItem.classList.add("done");
+      toggleTaskDone();
+    } else {
+      todoItem.classList.remove("done");
+      toggleTaskDone();
+    }
+  };
+
+  checkbox.addEventListener("change", toggleCheckbox);
+  return label;
+});
+
+_defineProperty(UI, "createTaskName", function (newTaskName, todoNameInput) {
+  var todoName = document.createElement("div");
+  todoName.classList.add("todo-name");
   todoNameInput.setAttribute("type", "text");
   todoNameInput.setAttribute("value", "".concat(newTaskName));
   todoNameInput.setAttribute("readonly", true);
   todoName.appendChild(todoNameInput);
-  /* Create edit and delete buttons */
+  return todoName;
+});
 
+_defineProperty(UI, "createTodoActions", function (newTaskName, todoNameInput) {
+  var todoActions = document.createElement("div");
+  todoActions.classList.add("todo-actions");
   var editBtn = document.createElement("button");
   var deleteBtn = document.createElement("button");
   var editBtnIcon = document.createElement("i");
@@ -264,42 +281,46 @@ _defineProperty(UI, "createTodoItem", function (newTaskName, isDone) {
   deleteBtn.appendChild(deleteBtnIcon);
   todoActions.appendChild(editBtn);
   todoActions.appendChild(deleteBtn);
-  checkbox.addEventListener("change", function (e) {
-    if (e.target.checked) {
-      todoItem.classList.add("done");
-      todoListArray.getTask(newTaskName).toggleDone();
-      _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
-    } else {
-      todoItem.classList.remove("done");
-      todoListArray.getTask(newTaskName).toggleDone();
-      _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
-    }
 
+  var saveEditedTaskName = function saveEditedTaskName() {
+    todoNameInput.setAttribute("readonly", true);
+    todoListArray.getTask(newTaskName).name = todoNameInput.value;
+    _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
     UI.displayTodoList();
-  });
-  editBtn.addEventListener("click", function () {
+  };
+
+  var editTaskName = function editTaskName() {
     todoNameInput.removeAttribute("readonly");
     todoNameInput.focus();
     todoNameInput.select();
-    todoNameInput.addEventListener("blur", function () {
-      todoNameInput.setAttribute("readonly", true);
-      todoListArray.getTask(newTaskName).name = todoNameInput.value;
-      _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
-      UI.displayTodoList();
-    });
-  });
-  deleteBtn.addEventListener("click", function () {
+    todoNameInput.addEventListener("change", saveEditedTaskName);
+  };
+
+  var removeTask = function removeTask() {
     todoListArray.removeTask(newTaskName);
     _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
     UI.displayTodoList();
-  });
+  };
+
+  editBtn.addEventListener("click", editTaskName);
+  deleteBtn.addEventListener("click", removeTask);
+  return todoActions;
+});
+
+_defineProperty(UI, "createTodoItem", function (newTaskName, isDone) {
+  var todoItem = document.createElement("div");
+  var todoNameInput = document.createElement("input");
+  todoItem.classList.add("todo-item");
+  var label = UI.createCheckbox(newTaskName, isDone, todoItem);
+  var todoName = UI.createTaskName(newTaskName, todoNameInput);
+  var todoActions = UI.createTodoActions(newTaskName, todoNameInput);
   todoItem.appendChild(label);
   todoItem.appendChild(todoName);
   todoItem.appendChild(todoActions);
   return todoItem;
 });
 
-_defineProperty(UI, "initializeApp", function () {
+_defineProperty(UI, "addInputEventListeners", function () {
   var addNewTaskBtn = document.getElementById("add-new-task-btn");
   var todoInput = document.getElementById("new-task-input");
   addNewTaskBtn.addEventListener("click", UI.addNewTask);
@@ -308,6 +329,10 @@ _defineProperty(UI, "initializeApp", function () {
       UI.addNewTask();
     }
   });
+});
+
+_defineProperty(UI, "initializeApp", function () {
+  UI.addInputEventListeners();
 
   window.onload = function () {
     UI.displayTodoList();
