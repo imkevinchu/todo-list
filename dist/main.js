@@ -40,6 +40,26 @@ _defineProperty(Storage, "saveTodoList", function (todoListArray) {
   localStorage.setItem("todolist", JSON.stringify(todoListArray));
 });
 
+_defineProperty(Storage, "addTask", function (todoListArray, newTask) {
+  todoListArray.addTask(newTask);
+  Storage.saveTodoList(todoListArray);
+});
+
+_defineProperty(Storage, "removeTask", function (todoListArray, newTaskName) {
+  todoListArray.removeTask(newTaskName);
+  Storage.saveTodoList(todoListArray);
+});
+
+_defineProperty(Storage, "saveEditedTask", function (todoListArray, newTaskName, todoNameInput) {
+  todoListArray.getTask(newTaskName).name = todoNameInput.value;
+  Storage.saveTodoList(todoListArray);
+});
+
+_defineProperty(Storage, "toggleTaskDone", function (todoListArray, newTaskName) {
+  todoListArray.getTask(newTaskName).toggleDone();
+  Storage.saveTodoList(todoListArray);
+});
+
 /***/ }),
 
 /***/ "./src/modules/Task.js":
@@ -209,9 +229,8 @@ _defineProperty(UI, "addNewTask", function () {
     return false;
   }
 
-  todoListArray.addTask(newTask);
-  _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
   todoInput.value = "";
+  _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.addTask(todoListArray, newTask);
   UI.displayTodoList();
 });
 
@@ -237,8 +256,7 @@ _defineProperty(UI, "createCheckbox", function (newTaskName, isDone, todoItem) {
   label.appendChild(checkbox);
 
   var toggleTaskDone = function toggleTaskDone() {
-    todoListArray.getTask(newTaskName).toggleDone();
-    _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
+    _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.toggleTaskDone(todoListArray, newTaskName);
     UI.displayTodoList();
   };
 
@@ -284,8 +302,7 @@ _defineProperty(UI, "createTodoActions", function (newTaskName, todoNameInput) {
 
   var saveEditedTaskName = function saveEditedTaskName() {
     todoNameInput.setAttribute("readonly", true);
-    todoListArray.getTask(newTaskName).name = todoNameInput.value;
-    _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
+    _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveEditedTask(todoListArray, newTaskName, todoNameInput);
     UI.displayTodoList();
   };
 
@@ -297,8 +314,7 @@ _defineProperty(UI, "createTodoActions", function (newTaskName, todoNameInput) {
   };
 
   var removeTask = function removeTask() {
-    todoListArray.removeTask(newTaskName);
-    _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.saveTodoList(todoListArray);
+    _Storage__WEBPACK_IMPORTED_MODULE_1__.Storage.removeTask(todoListArray, newTaskName);
     UI.displayTodoList();
   };
 

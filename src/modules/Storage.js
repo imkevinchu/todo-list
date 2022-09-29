@@ -16,4 +16,24 @@ export class Storage {
   static saveTodoList = (todoListArray) => {
     localStorage.setItem("todolist", JSON.stringify(todoListArray));
   };
+
+  static addTask = (todoListArray, newTask) => {
+    todoListArray.addTask(newTask);
+    Storage.saveTodoList(todoListArray);
+  };
+
+  static removeTask = (todoListArray, newTaskName) => {
+    todoListArray.removeTask(newTaskName);
+    Storage.saveTodoList(todoListArray);
+  };
+
+  static saveEditedTask = (todoListArray, newTaskName, todoNameInput) => {
+    todoListArray.getTask(newTaskName).name = todoNameInput.value;
+    Storage.saveTodoList(todoListArray);
+  };
+
+  static toggleTaskDone = (todoListArray, newTaskName) => {
+    todoListArray.getTask(newTaskName).toggleDone();
+    Storage.saveTodoList(todoListArray);
+  };
 }

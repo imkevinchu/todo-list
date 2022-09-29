@@ -13,9 +13,8 @@ export class UI {
       return false;
     }
 
-    todoListArray.addTask(newTask);
-    Storage.saveTodoList(todoListArray);
     todoInput.value = "";
+    Storage.addTask(todoListArray, newTask);
     UI.displayTodoList();
   };
 
@@ -40,8 +39,7 @@ export class UI {
     label.appendChild(checkbox);
 
     const toggleTaskDone = () => {
-      todoListArray.getTask(newTaskName).toggleDone();
-      Storage.saveTodoList(todoListArray);
+      Storage.toggleTaskDone(todoListArray, newTaskName);
       UI.displayTodoList();
     };
 
@@ -90,8 +88,7 @@ export class UI {
 
     const saveEditedTaskName = () => {
       todoNameInput.setAttribute("readonly", true);
-      todoListArray.getTask(newTaskName).name = todoNameInput.value;
-      Storage.saveTodoList(todoListArray);
+      Storage.saveEditedTask(todoListArray, newTaskName, todoNameInput);
       UI.displayTodoList();
     };
 
@@ -103,8 +100,7 @@ export class UI {
     };
 
     const removeTask = () => {
-      todoListArray.removeTask(newTaskName);
-      Storage.saveTodoList(todoListArray);
+      Storage.removeTask(todoListArray, newTaskName);
       UI.displayTodoList();
     };
 
