@@ -1,6 +1,6 @@
 # todo-list
 
-This is a solution to the [todolist project on The Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-todo-list).
+Minimalist todo list app based on the [todo list assignment on The Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-todo-list).
 
 ## Overview
 
