@@ -78,6 +78,8 @@ button {
 .todo-item .todo-name input {
   color: #313154;
   font-size: 1.125rem;
+  width: 500px;
+  overflow: auto;
 }
 
 .todo-item .todo-actions {
