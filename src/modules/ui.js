@@ -28,16 +28,7 @@ export class UI {
     });
   };
 
-  static createTodoItem = (newTaskName, isDone) => {
-    const todoItem = document.createElement("div");
-    const todoName = document.createElement("div");
-    const todoActions = document.createElement("div");
-    todoItem.classList.add("todo-item");
-    todoName.classList.add("todo-name");
-    todoActions.classList.add("todo-actions");
-
-    /* Create checkbox element */
-
+  static createCheckbox = (newTaskName, isDone, todoItem) => {
     const label = document.createElement("label");
     const checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
@@ -48,15 +39,41 @@ export class UI {
     }
     label.appendChild(checkbox);
 
-    /* Create task name element */
+    const toggleTaskDone = () => {
+      todoListArray.getTask(newTaskName).toggleDone();
+      Storage.saveTodoList(todoListArray);
+      UI.displayTodoList();
+    };
 
-    const todoNameInput = document.createElement("input");
+    const toggleCheckbox = (e) => {
+      if (e.target.checked) {
+        todoItem.classList.add("done");
+        toggleTaskDone();
+      } else {
+        todoItem.classList.remove("done");
+        toggleTaskDone();
+      }
+    };
+
+    checkbox.addEventListener("change", toggleCheckbox);
+    return label;
+  };
+
+  static createTaskName = (newTaskName, todoNameInput) => {
+    const todoName = document.createElement("div");
+    todoName.classList.add("todo-name");
+
     todoNameInput.setAttribute("type", "text");
     todoNameInput.setAttribute("value", `${newTaskName}`);
     todoNameInput.setAttribute("readonly", true);
     todoName.appendChild(todoNameInput);
 
-    /* Create edit and delete buttons */
+    return todoName;
+  };
+
+  static createTodoActions = (newTaskName, todoNameInput) => {
+    const todoActions = document.createElement("div");
+    todoActions.classList.add("todo-actions");
 
     const editBtn = document.createElement("button");
     const deleteBtn = document.createElement("button");
@@ -71,44 +88,49 @@ export class UI {
     todoActions.appendChild(editBtn);
     todoActions.appendChild(deleteBtn);
 
-    checkbox.addEventListener("change", (e) => {
-      if (e.target.checked) {
-        todoItem.classList.add("done");
-        todoListArray.getTask(newTaskName).toggleDone();
-        Storage.saveTodoList(todoListArray);
-      } else {
-        todoItem.classList.remove("done");
-        todoListArray.getTask(newTaskName).toggleDone();
-        Storage.saveTodoList(todoListArray);
-      }
+    const saveEditedTaskName = () => {
+      todoNameInput.setAttribute("readonly", true);
+      todoListArray.getTask(newTaskName).name = todoNameInput.value;
+      Storage.saveTodoList(todoListArray);
       UI.displayTodoList();
-    });
+    };
 
-    editBtn.addEventListener("click", () => {
+    const editTaskName = () => {
       todoNameInput.removeAttribute("readonly");
       todoNameInput.focus();
       todoNameInput.select();
-      todoNameInput.addEventListener("blur", () => {
-        todoNameInput.setAttribute("readonly", true);
-        todoListArray.getTask(newTaskName).name = todoNameInput.value;
-        Storage.saveTodoList(todoListArray);
-        UI.displayTodoList();
-      });
-    });
+      todoNameInput.addEventListener("change", saveEditedTaskName);
+    };
 
-    deleteBtn.addEventListener("click", () => {
+    const removeTask = () => {
       todoListArray.removeTask(newTaskName);
       Storage.saveTodoList(todoListArray);
       UI.displayTodoList();
-    });
+    };
+
+    editBtn.addEventListener("click", editTaskName);
+    deleteBtn.addEventListener("click", removeTask);
+
+    return todoActions;
+  };
+
+  static createTodoItem = (newTaskName, isDone) => {
+    const todoItem = document.createElement("div");
+    const todoNameInput = document.createElement("input");
+    todoItem.classList.add("todo-item");
+
+    const label = UI.createCheckbox(newTaskName, isDone, todoItem);
+    const todoName = UI.createTaskName(newTaskName, todoNameInput);
+    const todoActions = UI.createTodoActions(newTaskName, todoNameInput);
 
     todoItem.appendChild(label);
     todoItem.appendChild(todoName);
     todoItem.appendChild(todoActions);
+
     return todoItem;
   };
 
-  static initializeApp = () => {
+  static addInputEventListeners = () => {
     const addNewTaskBtn = document.getElementById("add-new-task-btn");
     const todoInput = document.getElementById("new-task-input");
 
@@ -118,6 +140,10 @@ export class UI {
         UI.addNewTask();
       }
     });
+  };
+
+  static initializeApp = () => {
+    UI.addInputEventListeners();
 
     window.onload = () => {
       UI.displayTodoList();
