@@ -15,4 +15,5 @@ Minimalist todo list app based on the [todo list assignment on The Odin Project]
 
 ### Preview
 
+[Live webapp on GitHub pages](https://imkevinchu.github.io/todo-list/)
 ![](./preview.jpg)
